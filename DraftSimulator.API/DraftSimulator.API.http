@@ -1,0 +1,6 @@
+@DraftSimulator.API_HostAddress = http://localhost:5174
+
+GET {{DraftSimulator.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
