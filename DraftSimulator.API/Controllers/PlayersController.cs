@@ -1,21 +1,25 @@
 using Microsoft.AspNetCore.Mvc;
-using DraftSimulator.API.Models;
+using System.Text.Json;
 using DraftSimulator.API.Services;
 
-namespace DraftSimulator.API.Controllers
-{
-    [ApiController]
-    [Route("api/[controller]")]
-    public class PlayersController : ControllerBase
-    {
-        private readonly IPlayerDataProvider _provider;
-        public PlayersController(IPlayerDataProvider provider) => _provider = provider;
+namespace DraftSimulator.API.Controllers;
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Player>>> GetPlayers()
-        {
-            var players = await _provider.GetPlayersAsync();
-            return Ok(players);
-        }
+[ApiController]
+[Route("api/[controller]")]
+public class PlayersController : ControllerBase
+{
+    private readonly IPlayerDataProvider _provider;
+
+    public PlayersController(IPlayerDataProvider provider) => _provider = provider;
+
+    // GET /api/players
+    [HttpGet]
+    public async Task<IActionResult> GetActivePlayers()
+    {
+        Dictionary<string, JsonElement> players = await _provider.GetActivePlayersAsync();
+
+        if (players.Count == 0) return NotFound();
+
+        return Ok(players);   // returns full Sleeper JSON for active players
     }
 }

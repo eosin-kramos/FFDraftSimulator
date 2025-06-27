@@ -1,7 +1,6 @@
-using DraftSimulator.API.Models;
+using System.Text.Json;
 
-namespace DraftSimulator.API.Services;
 public interface IPlayerDataProvider
 {
-    Task<IEnumerable<Player>> GetPlayersAsync();
+    Task<Dictionary<string, JsonElement>> GetActivePlayersAsync();
 }
